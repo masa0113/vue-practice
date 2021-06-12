@@ -1,0 +1,163 @@
+<template>
+  <div id='app'>
+        <div class="new-todo">
+            <div class="new-todo-item">
+                <label for="new-todo-title">タイトル</label>
+                <input v-model.trim="todoTitle" type="text" id="new-todo-title"/>
+            </div>
+            <div class="new-todo-item">
+                <label for="new-todo-title">説明</label>
+                <textarea v-model.trim="todoDescription" id="new-todo-description"/>
+            </div>
+        </div>
+        <div>
+            <div class="todo-search">
+                <div class="todo-search-item">
+                    <label for="todo-search-done">終了したものを非表示にする
+                        <input type="checkbox" v-model="hideDoneTodo" id="todo-search-done"/>
+                    </label>
+                </div>
+                <div class="todo-search-item">
+                    <select v-model="order">
+                        <option value="desc">降順</option>
+                        <option value="asc">昇順</option>
+                    </select>
+                </div>
+                <div class="todo-search-item">
+                    <label for="todo-search-keyword">キーワードで検索</label>
+                    <input v-model.trim="searchWord" type="text" id="todo-search-keyword"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, reactive } from 'vue'
+export default defineComponent({
+    name: 'ToDo',
+    setup() {
+        const state = reactive ({
+            todoTitle: '',
+            todoDescription: '',
+            searchWord: '',
+            todoCategories: [],
+            sekectCategory: '',
+            hideDoneTodo: false,
+            order: 'desc'
+        });
+        return {
+            state
+        }
+    }
+})
+</script>
+<style>
+.todo-list-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.todo-list-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.todo-list-enter-to,
+.todo-list-leave {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.todo-item {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* 以下は見栄えを整えるためのスタイル */
+.new-todo {
+  border: 1px solid #ccc;
+  padding: 30px;
+}
+
+.new-todo-item + .new-todo-item {
+  margin-top: 15px;
+}
+
+.new-todo-item {
+  display: flex;
+}
+
+.new-todo-item > label {
+  flex-basis: 5em;
+}
+
+.new-todo-item > input[type="text"],
+.new-todo-item > textarea {
+  flex-grow: 1;
+  font-size: inherit;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+}
+
+.new-todo-category {
+  margin-top: 20px;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.new-todo-action {
+  margin-top: 20px;
+}
+
+.new-todo-action > form {
+  text-align: center;
+}
+
+.todo-search {
+  display: flex;
+  margin-top: 20px;
+}
+
+.todo-search-item + .todo-search-item {
+  border-left: 1px solid #ccc;
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+.todo-list {
+  border: 1px solid #ccc;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.todo-item + .todo-item {
+  border-top: 1px solid #ccc;
+}
+
+.todo-item-content {
+  flex-grow: 1;
+  margin-left: 15px;
+}
+
+.todo-item-date {
+  font-size: 0.9em;
+}
+
+.todo-item-title {
+  margin: 0.3em 0;
+}
+
+.todo-item-description {
+  background-color: #f0f0f0;
+  padding: 1em;
+}
+
+.todo-item-categories {
+  margin-top: 10px;
+}
+</style>

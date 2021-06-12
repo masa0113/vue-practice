@@ -35,12 +35,12 @@
           </li>
         </ul>
         <form @submit.prevent="createCategory">
-          <input v-model.trim="categoryName" type="text" />
+          <input v-model.trim="state.categoryName" type="text" />
           <button type="submit" :disabled="!canCreateCategory">作成</button>
         </form>
       </div>
       <div class="new-todo-action">
-        <form id="form-todo" @submit.prevent="createCategory">
+        <form id="form-todo" @submit.prevent="createTodo">
           <button type="submit" :disabled="!canCreateTodo">作成</button>
         </form>
       </div>
@@ -117,7 +117,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, watch } from "vue";
+import { computed, defineComponent, onMounted, reactive, watch } from "vue";
+
+// TODO 一回localStorageに入れて更新すると上書きされない（watchで監視できてない？）
 
 // export interface ToDoAppModel {
 //   todoTitle: String;
@@ -160,6 +162,10 @@ export default defineComponent({
       categoryName: "",
       todos: [],
       categories: [],
+    });
+
+    onMounted(() => {
+      created();
     });
 
     const canCreateTodo = computed(() => {
@@ -241,6 +247,7 @@ export default defineComponent({
     watch(
       state.todos,
       (next) => {
+        console.log("change");
         window.localStorage.setItem("todos", JSON.stringify(next));
       },
       { deep: true }

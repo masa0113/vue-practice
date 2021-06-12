@@ -1,56 +1,119 @@
 <template>
-  <div id='app'>
-        <div class="new-todo">
-            <div class="new-todo-item">
-                <label for="new-todo-title">タイトル</label>
-                <input v-model.trim="todoTitle" type="text" id="new-todo-title"/>
-            </div>
-            <div class="new-todo-item">
-                <label for="new-todo-title">説明</label>
-                <textarea v-model.trim="todoDescription" id="new-todo-description"/>
-            </div>
-        </div>
-        <div>
-            <div class="todo-search">
-                <div class="todo-search-item">
-                    <label for="todo-search-done">終了したものを非表示にする
-                        <input type="checkbox" v-model="hideDoneTodo" id="todo-search-done"/>
-                    </label>
-                </div>
-                <div class="todo-search-item">
-                    <select v-model="order">
-                        <option value="desc">降順</option>
-                        <option value="asc">昇順</option>
-                    </select>
-                </div>
-                <div class="todo-search-item">
-                    <label for="todo-search-keyword">キーワードで検索</label>
-                    <input v-model.trim="searchWord" type="text" id="todo-search-keyword"/>
-                </div>
-            </div>
-        </div>
+  <div id="app">
+    <div class="new-todo">
+      <div class="new-todo-item">
+        <label for="new-todo-title">タイトル</label>
+        <input
+          v-model.trim="state.todoTitle"
+          type="text"
+          id="new-todo-title"
+          form="form-todo"
+        />
+      </div>
+      <div class="new-todo-item">
+        <label for="new-todo-title">説明</label>
+        <textarea
+          v-model.trim="state.todoDescription"
+          id="new-todo-description"
+          form="form-todo"
+        />
+      </div>
+      <div class="new-todo-category">
+        カテゴリ
+        <form @submit.prevent="createCategory">
+          <input v-model.trim="categoryName" type="text" />
+          <button type="submit">作成</button>
+        </form>
+      </div>
+      <div class="new-todo-action">
+        <form id="form-todo" @submit.prevent="createCategory">
+          <button type="submit">作成</button>
+        </form>
+      </div>
     </div>
+    <div>
+      <div class="todo-search">
+        <div class="todo-search-item">
+          <label for="todo-search-done"
+            >終了したものを非表示にする
+            <input
+              type="checkbox"
+              v-model="state.hideDoneTodo"
+              id="todo-search-done"
+            />
+          </label>
+        </div>
+        <div class="todo-search-item">
+          <select v-model="state.order">
+            <option value="desc">降順</option>
+            <option value="asc">昇順</option>
+          </select>
+        </div>
+        <div class="todo-search-item">
+          <label for="todo-search-keyword">キーワードで検索</label>
+          <input
+            v-model.trim="state.searchWord"
+            @click="click($event)"
+            type="text"
+            id="todo-search-keyword"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { computed, defineComponent, reactive } from "vue";
 export default defineComponent({
-    name: 'ToDo',
-    setup() {
-        const state = reactive ({
-            todoTitle: '',
-            todoDescription: '',
-            searchWord: '',
-            todoCategories: [],
-            sekectCategory: '',
-            hideDoneTodo: false,
-            order: 'desc'
-        });
-        return {
-            state
-        }
-    }
-})
+  name: "ToDo",
+  setup() {
+    const state = reactive({
+      todoTitle: "",
+      todoDescription: "",
+      searchWord: "",
+      todoCategories: [],
+      sekectCategory: "",
+      hideDoneTodo: false,
+      order: "desc",
+      categoryName: "",
+    });
+
+    const canCreateTodo = computed(() => {
+      return state.todoTitle !== "";
+    });
+
+    const canCreateCategory = computed(() => {
+      return state.categoryName !== "";
+    });
+
+    const createTodo = () => {
+      if (!canCreateTodo.value) return;
+
+      state.todoTitle = "";
+      state.todoDescription = "";
+      state.todoCategories = [];
+    };
+
+    const createCategory = () => {
+      if (!canCreateCategory.value) return;
+
+      state.categoryName = "";
+    };
+
+    const click = (e) => {
+      console.log(e);
+    };
+    return {
+      state,
+      canCreateTodo,
+      canCreateCategory,
+      click,
+      createCategory,
+      createTodo,
+    };
+  },
+});
 </script>
 <style>
 .todo-list-enter {

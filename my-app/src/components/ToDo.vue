@@ -80,7 +80,6 @@
           <label for="todo-search-keyword">キーワードで検索</label>
           <input
             v-model.trim="state.searchWord"
-            @click="click($event)"
             type="text"
             id="todo-search-keyword"
           />
@@ -231,10 +230,6 @@ export default defineComponent({
       state.categoryName = "";
     };
 
-    const click = (e) => {
-      console.log(e);
-    };
-
     const created = () => {
       const todos = window.localStorage.getItem("todos");
       const categories = window.localStorage.getItem("categories");
@@ -263,7 +258,6 @@ export default defineComponent({
       state,
       canCreateTodo,
       canCreateCategory,
-      click,
       createCategory,
       createTodo,
       existsCategory,

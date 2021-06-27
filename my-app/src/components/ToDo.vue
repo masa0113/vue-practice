@@ -119,8 +119,6 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, watch } from "vue";
 
-// TODO 一回localStorageに入れて更新すると上書きされない（watchで監視できてない？）
-
 // export interface ToDoAppModel {
 //   todoTitle: String;
 //   todoDescription: String;
@@ -212,6 +210,8 @@ export default defineComponent({
         });
     });
 
+    const resultCategories = computed(() => state.categories);
+
     const createTodo = () => {
       if (!canCreateTodo.value) return;
 
@@ -245,16 +245,15 @@ export default defineComponent({
     };
 
     watch(
-      state.todos,
+      resultTodos,
       (next) => {
-        console.log("change");
         window.localStorage.setItem("todos", JSON.stringify(next));
       },
       { deep: true }
     );
 
     watch(
-      state.categories,
+      resultCategories,
       (next) => {
         window.localStorage.setItem("categories", JSON.stringify(next));
       },
@@ -271,6 +270,7 @@ export default defineComponent({
       created,
       hasTodos,
       resultTodos,
+      resultCategories,
     };
   },
 });

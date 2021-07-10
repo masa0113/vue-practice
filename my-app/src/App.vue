@@ -1,14 +1,14 @@
 <template>
-  <TODO />
+  <div id="nav">
+    <router-link to="/todo">ToDo</router-link> |<router-link to="/"
+      >Home</router-link
+    >
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import TODO from "./components/ToDo.vue";
-
 export default {
   name: "App",
-  components: {
-    TODO,
-  },
 };
 </script>

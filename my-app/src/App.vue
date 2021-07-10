@@ -1,10 +1,10 @@
 <template>
-  <div id="nav">
+  <nav>
     <router-link to="/todo">ToDo</router-link> |<router-link to="/"
       >Home</router-link
     >
-    <router-view></router-view>
-  </div>
+  </nav>
+  <router-view></router-view>
 </template>
 
 <script>
